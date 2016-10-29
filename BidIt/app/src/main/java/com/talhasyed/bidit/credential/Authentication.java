@@ -14,7 +14,7 @@ public class Authentication {
     private static final String KEY_LOGGED_IN_USER_ID = "key_logged_in_user_id";
 
 
-    private static Long getLoggedInUserId(Context context) {
+    public static Long getLoggedInUserId(Context context) {
         final long userId = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getLong(KEY_LOGGED_IN_USER_ID, -1);
         return userId == -1 ? null : userId;
     }
@@ -28,5 +28,10 @@ public class Authentication {
 
     public static boolean setLoggedInUser(UserModel user, Context context) {
         return setLoggedInUserId(user.get_id(), context);
+    }
+
+    public static void clearAll(Context mContext) {
+        SharedPreferences settings = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        settings.edit().clear().commit();
     }
 }

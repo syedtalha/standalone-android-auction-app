@@ -118,6 +118,7 @@ public class LoginActivity extends AppCompatActivity {
             }
             if (authSuccess) {
                 Authentication.setLoggedInUser(userModel, getBaseContext());
+                startActivity(new Intent(this,MainActivity.class));
                 return;
             } else {
                 return;

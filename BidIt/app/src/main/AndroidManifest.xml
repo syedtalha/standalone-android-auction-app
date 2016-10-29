@@ -33,10 +33,22 @@
         <!-- Listing Provider  End -->
         <activity
             android:name=".controllers.LoginActivity"
+            android:noHistory="true"
             android:label="@string/title_activity_login" />
         <activity
             android:name=".controllers.SignUpActivity"
-            android:label="@string/action_sign_up"></activity>
+            android:noHistory="true"
+            android:label="@string/action_sign_up" />
+        <activity
+            android:name=".controllers.MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

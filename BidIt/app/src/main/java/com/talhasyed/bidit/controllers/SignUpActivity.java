@@ -24,7 +24,8 @@ public class SignUpActivity extends AppCompatActivity {
     private UserCRUD userCRUD;
 
     private EditText etUsername, etPassword, etConfirmPassword, etName;
-    private TextInputLayout tilUserName,tilPassword,tilConfirmPassword,tilName;
+    private TextInputLayout tilUserName, tilPassword, tilConfirmPassword, tilName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,16 +33,16 @@ public class SignUpActivity extends AppCompatActivity {
 
         userCRUD = new UserCRUD(getContentResolver());
 
-        etUsername           = (EditText) findViewById(R.id.editTextSignUpUserName);
-        etPassword        = (EditText) findViewById(R.id.editTextSignUpPassword);
-        etConfirmPassword   = (EditText) findViewById(R.id.editTextSignUpConfirmPassword);
-        etName               = (EditText) findViewById(R.id.editTextSignUpName);
+        etUsername = (EditText) findViewById(R.id.editTextSignUpUserName);
+        etPassword = (EditText) findViewById(R.id.editTextSignUpPassword);
+        etConfirmPassword = (EditText) findViewById(R.id.editTextSignUpConfirmPassword);
+        etName = (EditText) findViewById(R.id.editTextSignUpName);
 
 
-        tilName           = (TextInputLayout) findViewById(R.id.textInputLayoutSignUpName);
-        tilConfirmPassword        = (TextInputLayout) findViewById(R.id.textInputLayoutSignUpConfirmPassword);
-        tilPassword   = (TextInputLayout) findViewById(R.id.textInputLayoutSignUpPassword);
-        tilUserName               = (TextInputLayout) findViewById(R.id.textInputLayoutSignUpUserName);
+        tilName = (TextInputLayout) findViewById(R.id.textInputLayoutSignUpName);
+        tilConfirmPassword = (TextInputLayout) findViewById(R.id.textInputLayoutSignUpConfirmPassword);
+        tilPassword = (TextInputLayout) findViewById(R.id.textInputLayoutSignUpPassword);
+        tilUserName = (TextInputLayout) findViewById(R.id.textInputLayoutSignUpUserName);
 
         etUsername.addTextChangedListener(new SelfClearingEditTextWatcher(tilUserName));
         etPassword.addTextChangedListener(new SelfClearingEditTextWatcher(tilPassword));
@@ -71,18 +72,16 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
 
-
-
     private void attemptSignUp() {
         // Reset errors.
-        tilUserName       .setError(null);
-        tilUserName       .setErrorEnabled(false);
-        tilPassword       .setError(null);
-        tilPassword       .setErrorEnabled(false);
+        tilUserName.setError(null);
+        tilUserName.setErrorEnabled(false);
+        tilPassword.setError(null);
+        tilPassword.setErrorEnabled(false);
         tilConfirmPassword.setError(null);
         tilConfirmPassword.setErrorEnabled(false);
-        tilName           .setError(null);
-        tilName           .setErrorEnabled(false);
+        tilName.setError(null);
+        tilName.setErrorEnabled(false);
 
 
         // Store values at the time of the login attempt.
@@ -100,6 +99,8 @@ public class SignUpActivity extends AppCompatActivity {
             tilPassword.setErrorEnabled(true);
             focusView = etPassword;
             cancel = true;
+        } else {
+
         }
 
 
@@ -109,7 +110,7 @@ public class SignUpActivity extends AppCompatActivity {
             tilConfirmPassword.setErrorEnabled(true);
             focusView = etConfirmPassword;
             cancel = true;
-        }   else    {
+        } else {
             if (!confirmedPassword.equals(password)) {
                 tilConfirmPassword.setError("Passwords do not match");
                 tilConfirmPassword.setErrorEnabled(true);
@@ -135,14 +136,13 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
 
-
         if (cancel) {
             focusView.requestFocus();
         } else {
             boolean authSuccess = false;
             UserModel userModel = null;
             try {
-                userModel = userCRUD.signUp(userName, password,name);
+                userModel = userCRUD.signUp(userName, password, name);
                 authSuccess = true;
             } catch (LocalAuthException e) {
                 e.printStackTrace();
@@ -170,7 +170,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
             if (authSuccess) {
                 Authentication.setLoggedInUser(userModel, getBaseContext());
-                //TODO startActivity(new Intent(this,MainActivity.class));
+                startActivity(new Intent(this, MainActivity.class));
                 return;
             } else {
                 return;

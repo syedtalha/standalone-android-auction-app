@@ -30,10 +30,10 @@ public class UserCRUD extends BaseCRUD {
         final Cursor queryCursor = contentResolver.query(
                 UserProv.CONTENT_URI,
                 null,
-                UserProv.USERNAME + " = '?' ",
+                UserProv.USERNAME + " = ? ",
                 new String[]{userName},
                 null);
-        if (queryCursor != null && queryCursor.getCount() > 1) {
+        if (queryCursor != null && queryCursor.getCount() > 0) {
             if (queryCursor.moveToFirst()) {
                 final String actualPassword = queryCursor.getString(queryCursor.getColumnIndex(UserProv.PASSWORD));
                 if (actualPassword != null) {
@@ -57,11 +57,21 @@ public class UserCRUD extends BaseCRUD {
 
     }
 
+    public boolean checkUser(long id)   {
+        final Cursor query = contentResolver.query(
+                UserProv.CONTENT_URI,
+                new String[]{UserProv._ID},
+                UserProv._ID + " = ? ",
+                new String[]{String.valueOf(id)},
+                null);
+        return (query!=null && query.getCount()>0) ;
+    }
+
     public UserModel signUp(@NonNull String userName, @NonNull String password, @NonNull String name) throws LocalAuthException {
         final Cursor query = contentResolver.query(
                 UserProv.CONTENT_URI,
                 null,
-                UserProv.USERNAME + " = '?' ",
+                UserProv.USERNAME + " = ? ",
                 new String[]{userName},
                 null);
         if (query != null && query.getCount() > 0) {
@@ -78,6 +88,7 @@ public class UserCRUD extends BaseCRUD {
                 UserProv.CONTENT_URI,
                 intoContentValues(userModel));
         if (newUri != null) {
+            userModel.set_id(Long.valueOf(newUri.getLastPathSegment()));
             return userModel;
         } else {
             throw new LocalAuthException("DB insertion exception", LocalAuthException.AuthErrorType.General);
