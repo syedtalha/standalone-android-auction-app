@@ -1,7 +1,9 @@
 package com.talhasyed.bidit.storage;
 
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.talhasyed.bidit.credential.LocalAuthException;
@@ -36,7 +38,9 @@ public class UserCRUD extends BaseCRUD {
                 final String actualPassword = queryCursor.getString(queryCursor.getColumnIndex(UserProv.PASSWORD));
                 if (actualPassword != null) {
                     if (actualPassword.equals(password)) {
-                        return intoModel(queryCursor);
+                        final UserModel userModel = intoModel(queryCursor);
+                        queryCursor.close();
+                        return userModel;
                     } else {
                         throw new LocalAuthException("Wrong Password", LocalAuthException.AuthErrorType.Password);
 
@@ -47,11 +51,47 @@ public class UserCRUD extends BaseCRUD {
             } else {
                 throw new LocalAuthException("DB error", LocalAuthException.AuthErrorType.General);
             }
-
         } else {
             throw new LocalAuthException("Username not found", LocalAuthException.AuthErrorType.UserName);
         }
 
+    }
+
+    public UserModel signUp(@NonNull String userName, @NonNull String password, @NonNull String name) throws LocalAuthException {
+        final Cursor query = contentResolver.query(
+                UserProv.CONTENT_URI,
+                null,
+                UserProv.USERNAME + " = '?' ",
+                new String[]{userName},
+                null);
+        if (query != null && query.getCount() > 0) {
+            throw new LocalAuthException("Username already taken", LocalAuthException.AuthErrorType.UserName);
+        }
+        query.close();
+
+        final UserModel userModel = new UserModel.Builder()
+                .withName(name)
+                .withUserName(userName)
+                .withPassword(password)
+                .build();
+        final Uri newUri = contentResolver.insert(
+                UserProv.CONTENT_URI,
+                intoContentValues(userModel));
+        if (newUri != null) {
+            return userModel;
+        } else {
+            throw new LocalAuthException("DB insertion exception", LocalAuthException.AuthErrorType.General);
+        }
+
+
+    }
+
+    private ContentValues intoContentValues(UserModel userModel) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(UserProv.NAME, userModel.getName());
+        contentValues.put(UserProv.PASSWORD, userModel.getPassword());
+        contentValues.put(UserProv.USERNAME, userModel.getUserName());
+        return contentValues;
     }
 
 
@@ -63,4 +103,6 @@ public class UserCRUD extends BaseCRUD {
         userModel.setPassword(c.getString(c.getColumnIndex(UserProv.PASSWORD)));
         return userModel;
     }
+
+
 }

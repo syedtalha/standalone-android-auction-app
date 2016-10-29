@@ -9,6 +9,12 @@ public class UserModel extends BaseModel {
     private String userName;
     private String password;
 
+    private UserModel(Builder builder) {
+        setName(builder.name);
+        setUserName(builder.userName);
+        setPassword(builder.password);
+    }
+
     public String getName() {
         return name;
     }
@@ -31,5 +37,33 @@ public class UserModel extends BaseModel {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public static final class Builder {
+        private String name;
+        private String userName;
+        private String password;
+
+        public Builder() {
+        }
+
+        public Builder withName(String val) {
+            name = val;
+            return this;
+        }
+
+        public Builder withUserName(String val) {
+            userName = val;
+            return this;
+        }
+
+        public Builder withPassword(String val) {
+            password = val;
+            return this;
+        }
+
+        public UserModel build() {
+            return new UserModel(this);
+        }
     }
 }

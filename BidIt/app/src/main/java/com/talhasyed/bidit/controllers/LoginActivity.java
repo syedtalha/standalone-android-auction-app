@@ -18,6 +18,7 @@ import com.talhasyed.bidit.credential.Authentication;
 import com.talhasyed.bidit.credential.LocalAuthException;
 import com.talhasyed.bidit.model.UserModel;
 import com.talhasyed.bidit.storage.UserCRUD;
+import com.talhasyed.bidit.textwatchers.SelfClearingEditTextWatcher;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -31,8 +32,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        etUsername = (EditText) findViewById(R.id.textViewLoginUserName);
-        etPassword = (EditText) findViewById(R.id.textViewLoginPassword);
+        etUsername = (EditText) findViewById(R.id.editTextLoginUserName);
+        etPassword = (EditText) findViewById(R.id.editTextLoginPassword);
         tilPassword = (TextInputLayout) findViewById(R.id.textInputLayoutLoginPassword);
         tilUserName = (TextInputLayout) findViewById(R.id.textInputLayoutLoginUserName);
         etPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -45,6 +46,8 @@ public class LoginActivity extends AppCompatActivity {
                 return false;
             }
         });
+        etUsername.addTextChangedListener(new SelfClearingEditTextWatcher(tilUserName));
+        etPassword.addTextChangedListener(new SelfClearingEditTextWatcher(tilPassword));
 
         Button mEmailSignInButton = (Button) findViewById(R.id.buttonSignInSignIn);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
@@ -62,8 +65,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void attemptLogin() {
         // Reset errors.
-        etUsername.setError(null);
-        etPassword.setError(null);
+        tilUserName.setError(null);
+        tilPassword.setError(null);
 
         // Store values at the time of the login attempt.
         String userName = etUsername.getText().toString();
@@ -74,25 +77,23 @@ public class LoginActivity extends AppCompatActivity {
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            etPassword.setError(getString(R.string.error_invalid_password));
+            tilPassword.setError(getString(R.string.error_invalid_password));
+            tilPassword.setErrorEnabled(true);
             focusView = etPassword;
             cancel = true;
         }
 
         // Check for a valid userName address.
         if (TextUtils.isEmpty(userName)) {
-            etUsername.setError(getString(R.string.error_field_required));
+            tilUserName.setError(getString(R.string.error_field_required));
+            tilUserName.setErrorEnabled(true);
             focusView = etUsername;
             cancel = true;
         }
 
         if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
             boolean authSuccess = false;
             UserModel userModel = null;
             try {
@@ -125,19 +126,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 4;
     }
-
-
-//   Snackbar.make(etUsername, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-//    .setAction(android.R.string.ok, new View.OnClickListener() {
-//        @Override
-//        @TargetApi(Build.VERSION_CODES.M)
-//        public void onClick(View v) {
-//            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-//        }
-//    });
 
 
 }

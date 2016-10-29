@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.talhasyed.bidit.controllers.LoginActivity">
+    tools:context="com.talhasyed.bidit.controllers.SignUpActivity">
 
 
     <ScrollView
@@ -21,12 +21,27 @@
             android:orientation="vertical">
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/textInputLayoutLoginUserName"
+                android:id="@+id/textInputLayoutSignUpName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/editTextLoginUserName"
+                    android:id="@+id/editTextSignUpName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/prompt_name"
+                    android:inputType="textPersonName"
+                    android:maxLines="1" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInputLayoutSignUpUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/editTextSignUpUserName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_username"
@@ -35,16 +50,34 @@
 
             </android.support.design.widget.TextInputLayout>
 
+
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/textInputLayoutLoginPassword"
+                android:id="@+id/textInputLayoutSignUpPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/editTextLoginPassword"
+                    android:id="@+id/editTextSignUpPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_password"
+                    android:inputType="textPassword"
+                    android:maxLines="1" />
+
+            </android.support.design.widget.TextInputLayout>
+            
+            
+            
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInputLayoutSignUpConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/editTextSignUpConfirmPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/prompt_confirm_password"
                     android:imeActionId="@+id/login"
                     android:imeActionLabel="@string/action_sign_in"
                     android:imeOptions="actionUnspecified"
@@ -54,13 +87,13 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/buttonSignInSignIn"
+                android:id="@+id/buttonSignUpSignUp"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:background="@color/colorAccent"
-                android:text="@string/action_sign_in"
+                android:text="@string/action_sign_up"
                 android:textColor="@android:color/white"
                 android:textStyle="bold" />
 

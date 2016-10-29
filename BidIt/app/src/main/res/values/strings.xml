@@ -4,8 +4,11 @@
 
     <!-- Strings related to login -->
     <string name="prompt_username">Username</string>
+    <string name="prompt_name">Display Name</string>
     <string name="prompt_password">Password</string>
+    <string name="prompt_confirm_password">Confirm Password</string>
     <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_up">Sign Up</string>
     <string name="error_invalid_email">This username address is invalid</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
