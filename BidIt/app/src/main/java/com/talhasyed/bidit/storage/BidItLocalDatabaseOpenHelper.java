@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.talhasyed.bidit.storage.BidProviderContract.BidProv;
 import com.talhasyed.bidit.storage.ListingProviderContract.ListingProv;
 import com.talhasyed.bidit.storage.UserProviderContract.UserProv;
 
@@ -25,6 +26,7 @@ public class BidItLocalDatabaseOpenHelper extends SQLiteOpenHelper {
     private static final String NOT_NULL = " NOT NULL ";
     private static final String ON_CONFLICT_REPLACE = " ON CONFLICT REPLACE ";
     private static final String ON_CONFLICT_IGNORE = " ON CONFLICT IGNORE ";
+    private static final String ON_CONFLICT_ABORT = " ON CONFLICT ABORT ";
     private static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS ";
     private static final String DROP_TABLE_IF_EXISTS = "DROP TABLE IF EXISTS ";
     private static final String PRIMARY_KEY = " PRIMARY KEY";
@@ -52,14 +54,14 @@ public class BidItLocalDatabaseOpenHelper extends SQLiteOpenHelper {
                     + INTEGER_TYPE + PRIMARY_KEY + COMMA
 
 
-                    + UserProv.USERNAME     + TEXT_TYPE + NOT_NULL + ON_CONFLICT_IGNORE + COMMA
-                    + UserProv.PASSWORD     + TEXT_TYPE + COMMA
-                    + UserProv.NAME         + TEXT_TYPE + COMMA
+                    + UserProv.USERNAME     + TEXT_TYPE + NOT_NULL + ON_CONFLICT_ABORT + COMMA
+                    + UserProv.PASSWORD     + TEXT_TYPE + NOT_NULL + ON_CONFLICT_ABORT + COMMA
+                    + UserProv.NAME         + TEXT_TYPE + NOT_NULL + ON_CONFLICT_ABORT + COMMA
 
 
                     + UNIQUE + "(" +
                     UserProv.USERNAME +
-                    ")" + ON_CONFLICT_REPLACE +
+                    ")" + ON_CONFLICT_ABORT +
                     // Any other options for the CREATE command
                     " )");
 
@@ -77,23 +79,70 @@ public class BidItLocalDatabaseOpenHelper extends SQLiteOpenHelper {
                     + INTEGER_TYPE + PRIMARY_KEY + COMMA
 
 
-                    + ListingProv.NAME                + TEXT_TYPE + COMMA
+                    + ListingProv.NAME                + TEXT_TYPE + NOT_NULL + ON_CONFLICT_ABORT + COMMA
                     + ListingProv.DESCRIPTION         + TEXT_TYPE + COMMA
-                    + ListingProv.START_DATE          + TEXT_TYPE + COMMA
+                    + ListingProv.START_DATE          + TEXT_TYPE + NOT_NULL + ON_CONFLICT_ABORT + COMMA
                     + ListingProv.CLOSING_DATE        + TEXT_TYPE + COMMA
                     + ListingProv.WINNING_BID_ID      + TEXT_TYPE + COMMA
 
 
+                    + FOREIGN_KEY+
+                    "("+ListingProv.WINNING_BID_ID +")"
+                    + REFERENCES +
+                    BidProv.TABLE_NAME+"("+BidProv._ID+")"
+                    +ON_DELETE+ CASCADE +
+                    ON_UPDATE + CASCADE
+
 
                     + UNIQUE + "(" +
-                    UserProv.USERNAME +
-                    ")" + ON_CONFLICT_REPLACE +
+                    ListingProv.WINNING_BID_ID +
+                    ")" + ON_CONFLICT_ABORT +
                     // Any other options for the CREATE command
                     " )");
 
 
+    /**
+     * Listing Create table start
+     */
+    public static final String SQL_CREATE_BIDS =
+            (CREATE_TABLE
+                    +
+                    BidProv.TABLE_NAME
+                    + " ("
+                    + BidProv._ID
+                    + INTEGER_TYPE + PRIMARY_KEY + COMMA
+
+
+                    + BidProv.USER_ID               + TEXT_TYPE + NOT_NULL + ON_CONFLICT_ABORT + COMMA
+                    + BidProv.LISTING_ID            + TEXT_TYPE + NOT_NULL + ON_CONFLICT_ABORT + COMMA
+                    + BidProv.AMOUNT                + TEXT_TYPE + NOT_NULL + ON_CONFLICT_ABORT + COMMA
+                    + BidProv.DATE                  + TEXT_TYPE + NOT_NULL + ON_CONFLICT_ABORT + COMMA
+
+                    + FOREIGN_KEY+
+                    "("+BidProv.USER_ID +")"
+                    + REFERENCES +
+                    UserProv.TABLE_NAME+"("+UserProv._ID+")"
+                    +ON_DELETE+ CASCADE +
+                    ON_UPDATE + CASCADE
+
+                    + FOREIGN_KEY+
+                    "("+BidProv.LISTING_ID +")"
+                    + REFERENCES +
+                    ListingProv.TABLE_NAME+"("+ListingProv._ID+")"
+                    +ON_DELETE+ CASCADE +
+                    ON_UPDATE + CASCADE
+
+
+                    // Any other options for the CREATE command
+                    +" )");
+
+
     private static final String SQL_DELETE_USERS =
             DROP_TABLE_IF_EXISTS + UserProv.TABLE_NAME;
+    private static final String SQL_DELETE_LISTINGS =
+            DROP_TABLE_IF_EXISTS + ListingProv.TABLE_NAME;
+    private static final String SQL_DELETE_BIDS =
+            DROP_TABLE_IF_EXISTS + BidProv.TABLE_NAME;
 
     @Override
     public void onConfigure(SQLiteDatabase db) {
@@ -105,6 +154,8 @@ public class BidItLocalDatabaseOpenHelper extends SQLiteOpenHelper {
 
     public void onCreate(SQLiteDatabase db) {
          db.execSQL(SQL_CREATE_USERS);
+         db.execSQL(SQL_CREATE_LISTINGS);
+         db.execSQL(SQL_CREATE_BIDS);
 
     }
 
@@ -120,6 +171,8 @@ public class BidItLocalDatabaseOpenHelper extends SQLiteOpenHelper {
 
     public void truncateAllTables(SQLiteDatabase db) {
         db.execSQL(SQL_DELETE_USERS);
+        db.execSQL(SQL_DELETE_LISTINGS);
+        db.execSQL(SQL_DELETE_BIDS);
         onCreate(db);
     }
 }
