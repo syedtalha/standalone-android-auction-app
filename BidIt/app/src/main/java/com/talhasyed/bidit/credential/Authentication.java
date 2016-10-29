@@ -19,7 +19,7 @@ public class Authentication {
         return userId == -1 ? null : userId;
     }
 
-    public static boolean setLoggedInUserId(Long userId, Context context) {
+    private static boolean setLoggedInUserId(Long userId, Context context) {
         SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putLong(KEY_LOGGED_IN_USER_ID, userId);

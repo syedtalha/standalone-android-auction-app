@@ -1,5 +1,6 @@
 package com.talhasyed.bidit.controllers;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -77,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            tilPassword.setError(getString(R.string.error_invalid_password));
+            tilPassword.setError(getString(R.string.error_incorrect_password));
             tilPassword.setErrorEnabled(true);
             focusView = etPassword;
             cancel = true;
@@ -130,5 +131,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    public void signUp(View view) {
+        startActivity(new Intent(this, SignUpActivity.class));
+    }
 }
 

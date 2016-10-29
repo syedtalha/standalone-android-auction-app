@@ -9,6 +9,9 @@ public class UserModel extends BaseModel {
     private String userName;
     private String password;
 
+    public UserModel() {
+    }
+
     private UserModel(Builder builder) {
         setName(builder.name);
         setUserName(builder.userName);
