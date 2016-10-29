@@ -48,13 +48,12 @@ public class BidProviderContract {
         ////////////
 
 
-        public static final String USER_ID = "user_id";
-        public static final String LISTING_ID = "listing_id";
-        public static final String AMOUNT = "amount";
-        public static final String DATE = "date";
+        public static final String USER_ID          = "user_id";
+        public static final String LISTING_ID       = "listing_id";
+        public static final String AMOUNT           = "amount";
+        public static final String DATE             = "date";
 
 
-        public static final String COLUMN_NAME_NULLABLE = "whyIsThisIsNull";
 
 
         /**

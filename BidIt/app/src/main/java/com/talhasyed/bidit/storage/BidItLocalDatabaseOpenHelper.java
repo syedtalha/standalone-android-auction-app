@@ -115,7 +115,7 @@ public class BidItLocalDatabaseOpenHelper extends SQLiteOpenHelper {
 
                     + BidProv.USER_ID               + TEXT_TYPE + NOT_NULL + ON_CONFLICT_ABORT + COMMA
                     + BidProv.LISTING_ID            + TEXT_TYPE + NOT_NULL + ON_CONFLICT_ABORT + COMMA
-                    + BidProv.AMOUNT                + TEXT_TYPE + NOT_NULL + ON_CONFLICT_ABORT + COMMA
+                    + BidProv.AMOUNT                + REAL_TYPE + NOT_NULL + ON_CONFLICT_ABORT + COMMA
                     + BidProv.DATE                  + TEXT_TYPE + NOT_NULL + ON_CONFLICT_ABORT + COMMA
 
                     + FOREIGN_KEY+

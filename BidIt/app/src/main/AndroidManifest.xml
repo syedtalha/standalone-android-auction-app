@@ -8,6 +8,26 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- User Provider  Start -->
+        <provider
+            android:name=".storage.UserProvider"
+            android:authorities="com.talhasyed.bidit.provider.UserProvider"
+            android:enabled="true" />
+        <!-- User Provider  End -->
+
+        <!-- Bid Provider  Start -->
+        <provider
+            android:name=".storage.BidProvider"
+            android:authorities="com.talhasyed.bidit.provider.BidProvider"
+            android:enabled="true" />
+        <!-- Bid Provider  End -->
+
+        <!-- Listing Provider  Start -->
+        <provider
+            android:name=".storage.ListingProvider"
+            android:authorities="com.talhasyed.bidit.provider.ListingProvider"
+            android:enabled="true" />
+        <!-- Listing Provider  End -->
     </application>
 
 </manifest>

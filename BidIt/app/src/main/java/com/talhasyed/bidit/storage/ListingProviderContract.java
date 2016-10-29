@@ -48,14 +48,13 @@ public class ListingProviderContract {
         ////////////
 
 
-        public static final String NAME = "name";
-        public static final String DESCRIPTION = "description";
-        public static final String START_DATE = "start_date";
-        public static final String CLOSING_DATE = "closing_date";
-        public static final String WINNING_BID_ID = "winning_bid_id";
+        public static final String NAME             = "name";
+        public static final String DESCRIPTION      = "description";
+        public static final String START_DATE       = "start_date";
+        public static final String CLOSING_DATE     = "closing_date";
+        public static final String WINNING_BID_ID   = "winning_bid_id";
 
 
-        public static final String COLUMN_NAME_NULLABLE = "whyIsThisIsNull";
 
 
         /**

@@ -48,12 +48,11 @@ public class UserProviderContract {
         ////////////
 
 
-        public static final String NAME = "name";
+        public static final String NAME     = "name";
         public static final String USERNAME = "username";
         public static final String PASSWORD = "password";
 
 
-        public static final String COLUMN_NAME_NULLABLE = "whyIsThisIsNull";
 
 
         /**
