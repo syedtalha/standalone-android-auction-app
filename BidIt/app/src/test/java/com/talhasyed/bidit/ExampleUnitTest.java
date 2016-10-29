@@ -1,4 +1,4 @@
-package com.talhasyed.bidmate;
+package com.talhasyed.bidit;
 
 import org.junit.Test;
 
