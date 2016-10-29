@@ -4,6 +4,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.talhasyed.bidit.storage.ListingProviderContract.ListingProv;
+import com.talhasyed.bidit.storage.UserProviderContract.UserProv;
+
 /**
  * Created by Talha.Syed on 10/29/2016.
  */
@@ -37,6 +40,61 @@ public class BidItLocalDatabaseOpenHelper extends SQLiteOpenHelper {
     }
 
 
+    /**
+     * User Create table start
+     */
+    public static final String SQL_CREATE_USERS =
+            (CREATE_TABLE
+                    +
+                    UserProv.TABLE_NAME
+                    + " ("
+                    + UserProv._ID
+                    + INTEGER_TYPE + PRIMARY_KEY + COMMA
+
+
+                    + UserProv.USERNAME     + TEXT_TYPE + NOT_NULL + ON_CONFLICT_IGNORE + COMMA
+                    + UserProv.PASSWORD     + TEXT_TYPE + COMMA
+                    + UserProv.NAME         + TEXT_TYPE + COMMA
+
+
+                    + UNIQUE + "(" +
+                    UserProv.USERNAME +
+                    ")" + ON_CONFLICT_REPLACE +
+                    // Any other options for the CREATE command
+                    " )");
+
+
+
+    /**
+     * Listing Create table start
+     */
+    public static final String SQL_CREATE_LISTINGS =
+            (CREATE_TABLE
+                    +
+                    ListingProv.TABLE_NAME
+                    + " ("
+                    + ListingProv._ID
+                    + INTEGER_TYPE + PRIMARY_KEY + COMMA
+
+
+                    + ListingProv.NAME                + TEXT_TYPE + COMMA
+                    + ListingProv.DESCRIPTION         + TEXT_TYPE + COMMA
+                    + ListingProv.START_DATE          + TEXT_TYPE + COMMA
+                    + ListingProv.CLOSING_DATE        + TEXT_TYPE + COMMA
+                    + ListingProv.WINNING_BID_ID      + TEXT_TYPE + COMMA
+
+
+
+                    + UNIQUE + "(" +
+                    UserProv.USERNAME +
+                    ")" + ON_CONFLICT_REPLACE +
+                    // Any other options for the CREATE command
+                    " )");
+
+
+    private static final String SQL_DELETE_USERS =
+            DROP_TABLE_IF_EXISTS + UserProv.TABLE_NAME;
+
     @Override
     public void onConfigure(SQLiteDatabase db) {
         //super.onConfigure(db);//FIXME enable super
@@ -46,7 +104,7 @@ public class BidItLocalDatabaseOpenHelper extends SQLiteOpenHelper {
 
 
     public void onCreate(SQLiteDatabase db) {
-//         db.execSQL(SQL_CREATE_);
+         db.execSQL(SQL_CREATE_USERS);
 
     }
 
@@ -61,7 +119,7 @@ public class BidItLocalDatabaseOpenHelper extends SQLiteOpenHelper {
     }
 
     public void truncateAllTables(SQLiteDatabase db) {
-//        db.execSQL(SQL_DELETE_);
+        db.execSQL(SQL_DELETE_USERS);
         onCreate(db);
     }
 }
