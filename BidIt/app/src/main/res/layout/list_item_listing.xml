@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewListItemListingName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            tools:text="Name Short" />
+
+        <TextView
+            android:id="@+id/textViewListItemListingDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:padding="4dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            tools:text="Description Long aklsdlkjasdflkjsda SHorasdfdsfasdfdsfsdafasdfsadf asdfasdfdsa asdf asdfasd fads t" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:orientation="horizontal">
+
+            <!-- <TextView
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:padding="4dp"
+                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                 tools:text="Closing: " />-->
+
+            <TextView
+                android:id="@+id/textViewListItemListingStartDateTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:padding="4dp"
+                android:textAlignment="textEnd"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:textColor="@android:color/black"
+                tools:text="19 July 2016" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" to " />
+
+            <TextView
+                android:id="@+id/textViewListItemListingClosingDateTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:padding="4dp"
+                android:textAlignment="textEnd"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:textColor="@android:color/black"
+                tools:text="19 July 2016" />
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>
