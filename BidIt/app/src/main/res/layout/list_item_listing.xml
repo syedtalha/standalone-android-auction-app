@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -112,6 +113,14 @@
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 android:textColor="@android:color/black"
                 tools:text="19 July 2016" />
+
+            <com.talhasyed.bidit.views.CountDownTimerView
+                android:id="@+id/countDownTimerViewListItemListingTimer"
+                android:paddingLeft="5dp"
+                app:prefixText="Time Left: "
+                tools:text="00:05:69"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
 

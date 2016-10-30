@@ -26,6 +26,7 @@ import com.talhasyed.bidit.storage.BidCRUD;
 import com.talhasyed.bidit.storage.ListingCRUD;
 import com.talhasyed.bidit.storage.ListingProviderContract;
 import com.talhasyed.bidit.storage.ListingProviderContract.ListingProv;
+import com.talhasyed.bidit.views.CountDownTimerView;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -45,6 +46,7 @@ public class ListingsListFragment extends Fragment implements LoaderManager.Load
             ListingProv.CLOSING_DATE,
             ListingProv.CURRENT_BID_ID,
             ListingProv._ID,
+            ListingProv.NAME
     };
     public static int[] toViews = {
             R.id.textViewListItemListingName,
@@ -52,7 +54,8 @@ public class ListingsListFragment extends Fragment implements LoaderManager.Load
             R.id.textViewListItemListingStartDateTime,
             R.id.textViewListItemListingClosingDateTime,
             R.id.textViewListItemListingMyBid,
-            R.id.textViewListItemListingHighestBid
+            R.id.textViewListItemListingHighestBid,
+            R.id.countDownTimerViewListItemListingTimer
 
     };
     private ListView listView;
@@ -86,6 +89,31 @@ public class ListingsListFragment extends Fragment implements LoaderManager.Load
         SimpleCursorAdapter.ViewBinder viewBinder = new SimpleCursorAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+                if (view.getId() == R.id.countDownTimerViewListItemListingTimer) {
+                    /**
+                     * Case timer
+                     */
+                    final Long endTime = cursor.getLong(cursor.getColumnIndex(ListingProv.CLOSING_DATE));
+                    final Long startTime = cursor.getLong(cursor.getColumnIndex(ListingProv.START_DATE));
+                    if (endTime == null) {
+                        ((CountDownTimerView) view).setText("");
+                        return true;
+                    } else {
+                        if (endTime > System.currentTimeMillis()) {
+                            ((CountDownTimerView) view).setTime(endTime, startTime);
+                            ((CountDownTimerView) view).startCountDown();
+                            return true;
+                        } else {
+                            //((DeviceCustomCountDownTimerView) view).setText("");
+                            ((CountDownTimerView) view).resetView();
+                            return true;
+                        }
+                    }
+//                    ((CountDownTimerView) view).resetView();
+//                        return true;
+                }
+
+
                 if (columnIndex == cursor.getColumnIndex(ListingProv.START_DATE) || columnIndex == cursor.getColumnIndex(ListingProv.CLOSING_DATE)) {
                     ((TextView) view).setText(DateTimeFormat.shortTime().withLocale(Locale.getDefault()).withZone(DateTimeZone.getDefault()).print(new DateTime(Long.valueOf(cursor.getString(columnIndex)))));
                     return true;
@@ -109,9 +137,7 @@ public class ListingsListFragment extends Fragment implements LoaderManager.Load
                     }
 
                     return true;
-                }
-
-                else {
+                } else {
                     return false;
                 }
             }
@@ -185,7 +211,7 @@ public class ListingsListFragment extends Fragment implements LoaderManager.Load
                     public void onClick(DialogInterface dialog, int which) {
                         final String bidResponse = bidCRUD.insert(new BidModel.Builder()
                                 .withAmount(Double.parseDouble(String.valueOf(numberPicker.getValue())))
-                               // .withDate(new DateTime())done inside insert
+                                // .withDate(new DateTime())done inside insert
                                 .withListingId(String.valueOf(l))
                                 .withUserId(String.valueOf(Authentication.getLoggedInUserId(getContext())))
                                 .build());
