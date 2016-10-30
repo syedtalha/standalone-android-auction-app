@@ -17,7 +17,7 @@ public abstract class BaseContentProvider extends ContentProvider {
 
     private BidItLocalDatabaseOpenHelper mOpenHelper;
     private SQLiteDatabase db;
-    private ContentResolver contentResolver;
+    protected ContentResolver contentResolver;
 
     protected abstract String getTableName();
 

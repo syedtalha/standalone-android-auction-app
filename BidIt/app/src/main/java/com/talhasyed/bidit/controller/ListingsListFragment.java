@@ -43,13 +43,16 @@ public class ListingsListFragment extends Fragment implements LoaderManager.Load
             ListingProv.DESCRIPTION,
             ListingProv.START_DATE,
             ListingProv.CLOSING_DATE,
-//          ListingProv.WINNING_BID_ID,
+            ListingProv.WINNING_BID_ID,
+            ListingProv._ID,
     };
     public static int[] toViews = {
             R.id.textViewListItemListingName,
             R.id.textViewListItemListingDescription,
             R.id.textViewListItemListingStartDateTime,
-            R.id.textViewListItemListingClosingDateTime
+            R.id.textViewListItemListingClosingDateTime,
+            R.id.textViewListItemListingMyBid,
+            R.id.textViewListItemListingHighestBid
 
     };
     private ListView listView;
@@ -57,6 +60,7 @@ public class ListingsListFragment extends Fragment implements LoaderManager.Load
 
     private ListingCRUD listingCRUD;
     private BidCRUD bidCRUD;
+    private Long userId;
 
     public ListingsListFragment() {
 
@@ -75,6 +79,7 @@ public class ListingsListFragment extends Fragment implements LoaderManager.Load
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        userId = Authentication.getLoggedInUserId(getContext());
         listingCRUD = new ListingCRUD(getContext().getContentResolver());
         bidCRUD = new BidCRUD(getContext().getContentResolver());
         adapter = new SimpleCursorAdapter(getContext(), R.layout.list_item_listing, null, fromColumns, toViews, 0);
@@ -84,7 +89,29 @@ public class ListingsListFragment extends Fragment implements LoaderManager.Load
                 if (columnIndex == cursor.getColumnIndex(ListingProv.START_DATE) || columnIndex == cursor.getColumnIndex(ListingProv.CLOSING_DATE)) {
                     ((TextView) view).setText(DateTimeFormat.shortTime().withLocale(Locale.getDefault()).withZone(DateTimeZone.getDefault()).print(new DateTime(Long.valueOf(cursor.getString(columnIndex)))));
                     return true;
-                } else {
+                } else if (columnIndex == cursor.getColumnIndex(ListingProv.WINNING_BID_ID)) {
+                    final Double highestBidForUser = bidCRUD.getHighestBidForUser(Long.valueOf(cursor.getString(cursor.getColumnIndex(ListingProv._ID))), userId);
+                    if (highestBidForUser != null) {
+                        ((TextView) view).setText(String.valueOf(highestBidForUser));
+
+                    } else {
+                        ((TextView) view).setText("Not Bidded");
+                    }
+
+                    return true;
+                } else if (columnIndex == cursor.getColumnIndex(ListingProv._ID)) {
+                    final Double highestBid = bidCRUD.getHighestBidFor(Long.valueOf(cursor.getString(cursor.getColumnIndex(ListingProv._ID))));
+                    if (highestBid != null) {
+                        ((TextView) view).setText(String.valueOf(highestBid));
+
+                    } else {
+                        ((TextView) view).setText("No Bids");
+                    }
+
+                    return true;
+                }
+
+                else {
                     return false;
                 }
             }
@@ -152,17 +179,14 @@ public class ListingsListFragment extends Fragment implements LoaderManager.Load
                 .setPositiveButton("Confirm Bid", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        final Long insertedId = bidCRUD.insert(new BidModel.Builder()
+                        final String bidResponse = bidCRUD.insert(new BidModel.Builder()
                                 .withAmount(Double.parseDouble(String.valueOf(numberPicker.getValue())))
                                 .withDate(new DateTime())
                                 .withListingId(String.valueOf(l))
                                 .withUserId(String.valueOf(Authentication.getLoggedInUserId(getContext())))
                                 .build());
-                        if (insertedId == null) {
-                            Toast.makeText(getContext(), "Failed to bid", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getContext(), "Successfully bid", Toast.LENGTH_SHORT).show();
-                        }
+                        Toast.makeText(getContext(), bidResponse == null ? "Failed" : bidResponse, Toast.LENGTH_SHORT).show();
+
                     }
                 })
                 .setNeutralButton("Cancel Bid", new DialogInterface.OnClickListener() {

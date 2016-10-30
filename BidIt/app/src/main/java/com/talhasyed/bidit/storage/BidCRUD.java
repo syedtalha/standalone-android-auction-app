@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.talhasyed.bidit.model.BidModel;
+import com.talhasyed.bidit.model.ListingModel;
 import com.talhasyed.bidit.storage.BidProviderContract.BidProv;
 
 import org.joda.time.DateTime;
@@ -55,12 +56,22 @@ public class BidCRUD extends BaseCRUD {
         return null;
     }
 
-    public Long insert(@NonNull BidModel bid) throws SQLiteConstraintException {
-        final Uri inserted = contentResolver.insert(BidProv.CONTENT_URI, intoContentValues(bid));
-        if (inserted != null) {
-            return Long.parseLong(inserted.getLastPathSegment());
-        } else {
-            return null;
+    public String insert(@NonNull BidModel bid) throws SQLiteConstraintException {
+        //TODO check date passed
+
+        Double highestBid = getHighestBidFor(Long.valueOf(bid.getListingId()));
+        if (highestBid==null)   {
+            highestBid = 0.0;
+        }
+        if (bid.getAmount()>highestBid) {
+            final Uri inserted = contentResolver.insert(BidProv.CONTENT_URI, intoContentValues(bid));
+            if (inserted != null) {
+                return "Bid Posted";
+            } else {
+                return "Bid Failed";
+            }
+        }   else    {
+            return "Bid Amount not sufficient";
         }
     }
 
@@ -70,6 +81,26 @@ public class BidCRUD extends BaseCRUD {
                 new String[]{" MAX(" + BidProv.AMOUNT + ") AS " + BidProv.AMOUNT},
                 BidProv.LISTING_ID + " = ? ",
                 new String[]{String.valueOf(listinId)},
+                null);
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            final double maxVal = cursor.getDouble(cursor.getColumnIndex(BidProv.AMOUNT));
+            cursor.close();
+            if (maxVal == 0.0) {
+                return null;
+            }
+            return maxVal;
+        }
+        return null;
+    }
+
+
+    public Double getHighestBidForUser(Long listinId,Long userId) {
+        final Cursor cursor = contentResolver.query(
+                BidProv.CONTENT_URI,
+                new String[]{" MAX(" + BidProv.AMOUNT + ") AS " + BidProv.AMOUNT},
+                BidProv.LISTING_ID + " = ? AND "+BidProv.USER_ID+" = ? ",
+                new String[]{String.valueOf(listinId),String.valueOf(userId)},
                 null);
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
