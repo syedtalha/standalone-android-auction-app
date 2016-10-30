@@ -1,4 +1,4 @@
-package com.talhasyed.bidit.controllers;
+package com.talhasyed.bidit.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +18,7 @@ import com.talhasyed.bidit.credential.Authentication;
 import com.talhasyed.bidit.credential.LocalAuthException;
 import com.talhasyed.bidit.model.UserModel;
 import com.talhasyed.bidit.storage.UserCRUD;
-import com.talhasyed.bidit.textwatchers.SelfClearingEditTextWatcher;
+import com.talhasyed.bidit.textwatcher.SelfClearingEditTextWatcher;
 
 public class SignUpActivity extends AppCompatActivity {
     private UserCRUD userCRUD;

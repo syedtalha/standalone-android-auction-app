@@ -1,4 +1,4 @@
-package com.talhasyed.bidit.controllers;
+package com.talhasyed.bidit.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +19,7 @@ import com.talhasyed.bidit.credential.Authentication;
 import com.talhasyed.bidit.credential.LocalAuthException;
 import com.talhasyed.bidit.model.UserModel;
 import com.talhasyed.bidit.storage.UserCRUD;
-import com.talhasyed.bidit.textwatchers.SelfClearingEditTextWatcher;
+import com.talhasyed.bidit.textwatcher.SelfClearingEditTextWatcher;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -117,8 +117,11 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
             if (authSuccess) {
-                Authentication.setLoggedInUser(userModel, getBaseContext());
-                startActivity(new Intent(this,MainActivity.class));
+                if(Authentication.setLoggedInUser(userModel, getBaseContext())) {
+                    startActivity(new Intent(this,MainActivity.class));
+                }   else    {
+                    Toast.makeText(this, "Failed to login!", Toast.LENGTH_SHORT).show();
+                }
                 return;
             } else {
                 return;

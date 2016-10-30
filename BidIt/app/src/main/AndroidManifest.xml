@@ -32,15 +32,15 @@
             android:enabled="true" />
         <!-- Listing Provider  End -->
         <activity
-            android:name=".controllers.LoginActivity"
+            android:name=".controller.LoginActivity"
             android:noHistory="true"
             android:label="@string/title_activity_login" />
         <activity
-            android:name=".controllers.SignUpActivity"
+            android:name=".controller.SignUpActivity"
             android:noHistory="true"
             android:label="@string/action_sign_up" />
         <activity
-            android:name=".controllers.MainActivity"
+            android:name=".controller.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

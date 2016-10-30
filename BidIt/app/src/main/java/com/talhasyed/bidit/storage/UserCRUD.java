@@ -57,14 +57,14 @@ public class UserCRUD extends BaseCRUD {
 
     }
 
-    public boolean checkUser(long id)   {
+    public boolean checkUser(long id) {
         final Cursor query = contentResolver.query(
                 UserProv.CONTENT_URI,
                 new String[]{UserProv._ID},
                 UserProv._ID + " = ? ",
                 new String[]{String.valueOf(id)},
                 null);
-        return (query!=null && query.getCount()>0) ;
+        return (query != null && query.getCount() > 0);
     }
 
     public UserModel signUp(@NonNull String userName, @NonNull String password, @NonNull String name) throws LocalAuthException {
@@ -116,4 +116,14 @@ public class UserCRUD extends BaseCRUD {
     }
 
 
+    public UserModel get(Long userId) {
+        final Cursor cursor = contentResolver.query(UserProv.CONTENT_URI, null, UserProv._ID + " = ? ", new String[]{String.valueOf(userId)}, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            final UserModel userModel = intoModel(cursor);
+            cursor.close();
+            return userModel;
+        }
+        return null;
+    }
 }

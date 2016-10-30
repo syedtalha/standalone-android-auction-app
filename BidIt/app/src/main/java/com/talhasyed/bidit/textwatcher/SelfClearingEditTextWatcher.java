@@ -1,4 +1,4 @@
-package com.talhasyed.bidit.textwatchers;
+package com.talhasyed.bidit.textwatcher;
 
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
