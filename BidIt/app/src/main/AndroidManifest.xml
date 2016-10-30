@@ -33,12 +33,12 @@
         <!-- Listing Provider  End -->
         <activity
             android:name=".controller.LoginActivity"
-            android:noHistory="true"
-            android:label="@string/title_activity_login" />
+            android:label="@string/title_activity_login"
+            android:noHistory="true" />
         <activity
             android:name=".controller.SignUpActivity"
-            android:noHistory="true"
-            android:label="@string/action_sign_up" />
+            android:label="@string/action_sign_up"
+            android:noHistory="true" />
         <activity
             android:name=".controller.MainActivity"
             android:label="@string/title_activity_main"
@@ -48,6 +48,13 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".controller.AddItemActivity"
+            android:label="@string/title_activity_add_item"
+            android:parentActivityName=".controller.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".controller.MainActivity" />
         </activity>
     </application>
 
