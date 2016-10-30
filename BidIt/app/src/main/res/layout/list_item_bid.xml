@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="4dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewListItemBidUsersName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            tools:text="Name User" />
+
+        <TextView
+            android:id="@+id/textViewListItemBidDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:padding="2dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            tools:text="3 July 2434" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:text="Bid Amount:" />
+
+            <TextView
+                android:id="@+id/textViewListItemBidAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:padding="2dp"
+                android:textAlignment="textStart"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:textColor="@android:color/black"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                tools:text="30054" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</RelativeLayout>

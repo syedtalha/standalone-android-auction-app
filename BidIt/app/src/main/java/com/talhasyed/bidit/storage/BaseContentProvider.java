@@ -15,8 +15,8 @@ import android.net.Uri;
 public abstract class BaseContentProvider extends ContentProvider {
     public static final String COLUMN_NAME_NULLABLE = "whyIsThisIsNull";
 
-    private BidItLocalDatabaseOpenHelper mOpenHelper;
-    private SQLiteDatabase db;
+    protected BidItLocalDatabaseOpenHelper mOpenHelper;
+    protected SQLiteDatabase db;
     protected ContentResolver contentResolver;
 
     protected abstract String getTableName();
@@ -64,7 +64,7 @@ public abstract class BaseContentProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
-        SQLiteDatabase db = mOpenHelper.getReadableDatabase();
+        db = mOpenHelper.getReadableDatabase();
         Cursor c = db.query(getTableName(), projection, selection, selectionArgs, null, null, sortOrder);
         //db.close();
         c.setNotificationUri(contentResolver, getBaseContentURI());

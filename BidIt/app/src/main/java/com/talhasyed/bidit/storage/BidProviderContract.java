@@ -22,6 +22,7 @@ public class BidProviderContract {
      * Path component for "entry"-type resources..
      */
     private static final String PATH_BIDS = "Bids";
+    private static final String PATH_BIDS_LIST = "BidsList";
 
     private BidProviderContract() {
     }
@@ -44,6 +45,8 @@ public class BidProviderContract {
          */
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_BIDS).build();
+        public static final Uri LIST_CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_BIDS_LIST).build();
         public static final String TABLE_NAME = "Bids";
         ////////////
 
