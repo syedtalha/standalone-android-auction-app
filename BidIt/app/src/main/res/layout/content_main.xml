@@ -9,10 +9,8 @@
     tools:context="com.talhasyed.bidit.controller.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <ListView
-        android:id="@+id/listViewMainListings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </ListView>
+<fragment
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    class="com.talhasyed.bidit.controller.ListingsListFragment"/>
 </RelativeLayout>

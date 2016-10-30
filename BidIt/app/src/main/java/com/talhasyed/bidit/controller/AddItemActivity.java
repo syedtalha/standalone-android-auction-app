@@ -145,7 +145,7 @@ public class AddItemActivity extends AppCompatActivity {
             etDesc.requestFocus();
             return null;
         } else {
-            model.setName(etDesc.getText().toString().trim());
+            model.setDescription(etDesc.getText().toString().trim());
         }
         if (closingTimeSet == null) {
             Toast.makeText(this, "Please select a closing time", Toast.LENGTH_SHORT).show();
