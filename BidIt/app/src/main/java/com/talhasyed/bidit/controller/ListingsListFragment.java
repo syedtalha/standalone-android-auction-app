@@ -43,7 +43,7 @@ public class ListingsListFragment extends Fragment implements LoaderManager.Load
             ListingProv.DESCRIPTION,
             ListingProv.START_DATE,
             ListingProv.CLOSING_DATE,
-            ListingProv.WINNING_BID_ID,
+            ListingProv.CURRENT_BID_ID,
             ListingProv._ID,
     };
     public static int[] toViews = {
@@ -89,7 +89,7 @@ public class ListingsListFragment extends Fragment implements LoaderManager.Load
                 if (columnIndex == cursor.getColumnIndex(ListingProv.START_DATE) || columnIndex == cursor.getColumnIndex(ListingProv.CLOSING_DATE)) {
                     ((TextView) view).setText(DateTimeFormat.shortTime().withLocale(Locale.getDefault()).withZone(DateTimeZone.getDefault()).print(new DateTime(Long.valueOf(cursor.getString(columnIndex)))));
                     return true;
-                } else if (columnIndex == cursor.getColumnIndex(ListingProv.WINNING_BID_ID)) {
+                } else if (columnIndex == cursor.getColumnIndex(ListingProv.CURRENT_BID_ID)) {
                     final Double highestBidForUser = bidCRUD.getHighestBidForUser(Long.valueOf(cursor.getString(cursor.getColumnIndex(ListingProv._ID))), userId);
                     if (highestBidForUser != null) {
                         ((TextView) view).setText(String.valueOf(highestBidForUser));
@@ -139,7 +139,7 @@ public class ListingsListFragment extends Fragment implements LoaderManager.Load
                 getContext(),
                 ListingProviderContract.BASE_CONTENT_URI,
                 null,
-                ListingProv.WINNING_BID_ID + " IS NULL ",
+                null,
                 null,
                 null);
     }
@@ -160,6 +160,10 @@ public class ListingsListFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, final long l) {
         final ListingModel listing = listingCRUD.get(l);
+        if (listing.getClosingDate().isBeforeNow()) {
+            Toast.makeText(getContext(), "Sorry, Auction closed!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         final Double maxVal = bidCRUD.getHighestBidFor(l);
         final MaterialNumberPicker numberPicker = new MaterialNumberPicker.Builder(getContext())
                 .maxValue(999999)
@@ -181,7 +185,7 @@ public class ListingsListFragment extends Fragment implements LoaderManager.Load
                     public void onClick(DialogInterface dialog, int which) {
                         final String bidResponse = bidCRUD.insert(new BidModel.Builder()
                                 .withAmount(Double.parseDouble(String.valueOf(numberPicker.getValue())))
-                                .withDate(new DateTime())
+                               // .withDate(new DateTime())done inside insert
                                 .withListingId(String.valueOf(l))
                                 .withUserId(String.valueOf(Authentication.getLoggedInUserId(getContext())))
                                 .build());

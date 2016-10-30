@@ -11,7 +11,7 @@ public class ListingModel extends BaseModel {
     private String description;
     private DateTime startDate;
     private DateTime closingDate;
-    private String winningBidId;
+    private String currentBidId;
 
     public String getName() {
         return name;
@@ -45,11 +45,11 @@ public class ListingModel extends BaseModel {
         this.closingDate = closingDate;
     }
 
-    public String getWinningBidId() {
-        return winningBidId;
+    public String getCurrentBidId() {
+        return currentBidId;
     }
 
-    public void setWinningBidId(String winningBidId) {
-        this.winningBidId = winningBidId;
+    public void setCurrentBidId(String currentBidId) {
+        this.currentBidId = currentBidId;
     }
 }

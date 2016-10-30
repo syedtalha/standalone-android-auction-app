@@ -57,22 +57,39 @@ public class BidCRUD extends BaseCRUD {
     }
 
     public String insert(@NonNull BidModel bid) throws SQLiteConstraintException {
-        //TODO check date passed
-
-        Double highestBid = getHighestBidFor(Long.valueOf(bid.getListingId()));
-        if (highestBid==null)   {
-            highestBid = 0.0;
-        }
-        if (bid.getAmount()>highestBid) {
-            final Uri inserted = contentResolver.insert(BidProv.CONTENT_URI, intoContentValues(bid));
-            if (inserted != null) {
-                return "Bid Posted";
+        ListingCRUD listingCRUD = new ListingCRUD(contentResolver);
+        final ListingModel listing = listingCRUD.get(Long.valueOf(bid.getListingId()));
+        if (listing == null) {
+            return "Listing no longer exists";
+        } else {
+            if (listing.getClosingDate().isBeforeNow()) {
+                return "Sorry, Auction closed!";
             } else {
-                return "Bid Failed";
+                /**
+                 * it is after now, so we can proceed
+                 */
+                bid.setDate(new DateTime());
+                Double highestBid = getHighestBidFor(Long.valueOf(bid.getListingId()));
+                if (highestBid == null) {
+                    highestBid = 0.0;
+                }
+                if (bid.getAmount() > highestBid) {
+                    final Uri inserted = contentResolver.insert(BidProv.CONTENT_URI, intoContentValues(bid));
+                    if (inserted != null) {
+                        if (listingCRUD.postCurrentBid(listing.get_id(), bid.get_id())) {
+                            return "Bid Posted";
+                        } else {
+                            return "Could not update listing entry";
+                        }
+                    } else {
+                        return "Bid Failed";
+                    }
+                } else {
+                    return "Bid Amount not sufficient";
+                }
             }
-        }   else    {
-            return "Bid Amount not sufficient";
         }
+
     }
 
     public Double getHighestBidFor(Long listinId) {
@@ -95,12 +112,12 @@ public class BidCRUD extends BaseCRUD {
     }
 
 
-    public Double getHighestBidForUser(Long listinId,Long userId) {
+    public Double getHighestBidForUser(Long listinId, Long userId) {
         final Cursor cursor = contentResolver.query(
                 BidProv.CONTENT_URI,
                 new String[]{" MAX(" + BidProv.AMOUNT + ") AS " + BidProv.AMOUNT},
-                BidProv.LISTING_ID + " = ? AND "+BidProv.USER_ID+" = ? ",
-                new String[]{String.valueOf(listinId),String.valueOf(userId)},
+                BidProv.LISTING_ID + " = ? AND " + BidProv.USER_ID + " = ? ",
+                new String[]{String.valueOf(listinId), String.valueOf(userId)},
                 null);
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();

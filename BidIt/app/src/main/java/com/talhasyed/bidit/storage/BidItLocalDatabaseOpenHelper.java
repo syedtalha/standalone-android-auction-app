@@ -83,11 +83,11 @@ public class BidItLocalDatabaseOpenHelper extends SQLiteOpenHelper {
                     + ListingProv.DESCRIPTION         + TEXT_TYPE + COMMA
                     + ListingProv.START_DATE          + TEXT_TYPE + NOT_NULL + ON_CONFLICT_ABORT + COMMA
                     + ListingProv.CLOSING_DATE        + TEXT_TYPE + COMMA
-                    + ListingProv.WINNING_BID_ID      + TEXT_TYPE + COMMA
+                    + ListingProv.CURRENT_BID_ID + TEXT_TYPE + COMMA
 
 
                     + FOREIGN_KEY+
-                    "("+ListingProv.WINNING_BID_ID +")"
+                    "("+ListingProv.CURRENT_BID_ID +")"
                     + REFERENCES +
                     BidProv.TABLE_NAME+"("+BidProv._ID+")"
                     +ON_DELETE+ CASCADE +
@@ -95,7 +95,7 @@ public class BidItLocalDatabaseOpenHelper extends SQLiteOpenHelper {
 
 
                     + UNIQUE + "(" +
-                    ListingProv.WINNING_BID_ID +
+                    ListingProv.CURRENT_BID_ID +
                     ")" + ON_CONFLICT_ABORT +
                     // Any other options for the CREATE command
                     " )");

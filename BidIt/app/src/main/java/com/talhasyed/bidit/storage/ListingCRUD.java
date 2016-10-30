@@ -27,7 +27,7 @@ public class ListingCRUD extends BaseCRUD {
         ContentValues contentValues = new ContentValues();
         contentValues.put(ListingProv.NAME, listingModel.getName());
         contentValues.put(ListingProv.DESCRIPTION, listingModel.getDescription());
-        contentValues.put(ListingProv.WINNING_BID_ID, listingModel.getWinningBidId());
+        contentValues.put(ListingProv.CURRENT_BID_ID, listingModel.getCurrentBidId());
         contentValues.put(ListingProv.START_DATE, listingModel.getStartDate() != null ? listingModel.getStartDate().getMillis() : null);
         contentValues.put(ListingProv.CLOSING_DATE, listingModel.getClosingDate() != null ? listingModel.getClosingDate().getMillis() : null);
         return contentValues;
@@ -39,7 +39,7 @@ public class ListingCRUD extends BaseCRUD {
         listingModel.set_id(c.getLong(c.getColumnIndex(ListingProv._ID)));
         listingModel.setName(c.getString(c.getColumnIndex(ListingProv.NAME)));
         listingModel.setDescription(c.getString(c.getColumnIndex(ListingProv.DESCRIPTION)));
-        listingModel.setWinningBidId(c.getString(c.getColumnIndex(ListingProv.WINNING_BID_ID)));
+        listingModel.setCurrentBidId(c.getString(c.getColumnIndex(ListingProv.CURRENT_BID_ID)));
         listingModel.setStartDate(c.isNull(c.getColumnIndex(ListingProv.START_DATE)) ? null : new DateTime(Long.valueOf(c.getString(c.getColumnIndex(ListingProv.START_DATE)))));
         listingModel.setClosingDate(c.isNull(c.getColumnIndex(ListingProv.CLOSING_DATE)) ? null : new DateTime(Long.valueOf(c.getString(c.getColumnIndex(ListingProv.CLOSING_DATE)))));
         return listingModel;
@@ -67,4 +67,14 @@ public class ListingCRUD extends BaseCRUD {
     }
 
 
+    public boolean postCurrentBid(Long listing_id, Long bid_id) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ListingProv.CURRENT_BID_ID,bid_id);
+        final int updated = contentResolver.update(ListingProv.CONTENT_URI, contentValues, ListingProv._ID + " = ? ", new String[]{String.valueOf(listing_id)});
+        if (updated<1)  {
+            return false;
+        }   else    {
+            return true;
+        }
+    }
 }
