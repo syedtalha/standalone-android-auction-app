@@ -95,6 +95,8 @@ public class ListingsListFragment extends Fragment implements LoaderManager.Load
                      */
                     final Long endTime = cursor.getLong(cursor.getColumnIndex(ListingProv.CLOSING_DATE));
                     final Long startTime = cursor.getLong(cursor.getColumnIndex(ListingProv.START_DATE));
+                    ((CountDownTimerView) view).resetView();
+
                     if (endTime == null) {
                         ((CountDownTimerView) view).setText("");
                         return true;
@@ -104,8 +106,8 @@ public class ListingsListFragment extends Fragment implements LoaderManager.Load
                             ((CountDownTimerView) view).startCountDown();
                             return true;
                         } else {
-                            //((DeviceCustomCountDownTimerView) view).setText("");
                             ((CountDownTimerView) view).resetView();
+                            ((CountDownTimerView) view).setText("Finished");
                             return true;
                         }
                     }
@@ -115,6 +117,7 @@ public class ListingsListFragment extends Fragment implements LoaderManager.Load
 
 
                 if (columnIndex == cursor.getColumnIndex(ListingProv.START_DATE) || columnIndex == cursor.getColumnIndex(ListingProv.CLOSING_DATE)) {
+
                     ((TextView) view).setText(DateTimeFormat.shortTime().withLocale(Locale.getDefault()).withZone(DateTimeZone.getDefault()).print(new DateTime(Long.valueOf(cursor.getString(columnIndex)))));
                     return true;
                 } else if (columnIndex == cursor.getColumnIndex(ListingProv.CURRENT_BID_ID)) {
