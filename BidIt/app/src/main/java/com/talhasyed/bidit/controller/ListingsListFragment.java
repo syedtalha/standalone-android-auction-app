@@ -1,7 +1,7 @@
 package com.talhasyed.bidit.controller;
 
 
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,19 +9,15 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.talhasyed.bidit.R;
 import com.talhasyed.bidit.credential.Authentication;
-import com.talhasyed.bidit.model.BidModel;
-import com.talhasyed.bidit.model.ListingModel;
 import com.talhasyed.bidit.storage.BidCRUD;
 import com.talhasyed.bidit.storage.ListingCRUD;
 import com.talhasyed.bidit.storage.ListingProviderContract;
@@ -33,8 +29,6 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 
 import java.util.Locale;
-
-import biz.kasual.materialnumberpicker.MaterialNumberPicker;
 
 
 public class ListingsListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener {
@@ -188,46 +182,7 @@ public class ListingsListFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, final long l) {
-        final ListingModel listing = listingCRUD.get(l);
-        if (listing.getClosingDate().isBeforeNow()) {
-            Toast.makeText(getContext(), "Sorry, Auction closed!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        final Double maxVal = bidCRUD.getHighestBidFor(l);
-        final MaterialNumberPicker numberPicker = new MaterialNumberPicker.Builder(getContext())
-                .maxValue(999999)
-                .defaultValue(1)
-                .textSize(30)
-                .enableFocusability(true)
-                .build();
-        if (maxVal != null) {
-            numberPicker.setMinValue(maxVal.intValue() + 1);
-            numberPicker.setValue(maxVal.intValue() + 1);
-        } else {
-            //TODO numberPicker.setMinValue(listing.getMinValue);
-        }
-        new AlertDialog.Builder(getContext())
-                .setTitle("Choose the bid amount")
-                .setView(numberPicker)
-                .setPositiveButton("Confirm Bid", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        final String bidResponse = bidCRUD.insert(new BidModel.Builder()
-                                .withAmount(Double.parseDouble(String.valueOf(numberPicker.getValue())))
-                                // .withDate(new DateTime())done inside insert
-                                .withListingId(String.valueOf(l))
-                                .withUserId(String.valueOf(Authentication.getLoggedInUserId(getContext())))
-                                .build());
-                        Toast.makeText(getContext(), bidResponse == null ? "Failed" : bidResponse, Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(getContext(), ListingDetailActivity.class).putExtra(ListingDetailActivity.KEY_LISTING_ID, l));
 
-                    }
-                })
-                .setNeutralButton("Cancel Bid", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .show();
     }
 }
