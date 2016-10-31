@@ -29,6 +29,7 @@ public class AutoBotService extends Service {
     private UserModel donaldTrump;
     private Timer timer;
 
+
     public AutoBotService() {
     }
 
@@ -46,18 +47,28 @@ public class AutoBotService extends Service {
         }
 
 
-
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        timer.cancel();
+        if (timer != null) {
+            timer.cancel();
+        }
     }
 
     @Override
+    public boolean onUnbind(Intent intent) {
+        if (timer != null) {
+            timer.cancel();
+        }
+        return super.onUnbind(intent);
+    }
+
+
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (timer!=null)    {
+        if (timer != null) {
             timer.cancel();
         }
         timer = new Timer();
