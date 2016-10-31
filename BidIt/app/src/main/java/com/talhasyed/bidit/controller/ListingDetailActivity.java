@@ -8,7 +8,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -89,6 +88,7 @@ public class ListingDetailActivity extends AutoBotServiceBoundActivity implement
             }
         });
         listView.setAdapter(adapter);
+        listView.setEmptyView(findViewById(R.id.emptyLayoutGeneralList));
         listCallback = new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
             public Loader<Cursor> onCreateLoader(int id, Bundle args) {

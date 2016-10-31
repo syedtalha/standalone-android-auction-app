@@ -44,7 +44,7 @@ public class AutoBotService extends Service {
         } catch (LocalAuthException e) {
             e.printStackTrace();//TODO handle this just in case Donald Trump manages to rig the election
         }
-        timer = new Timer();
+
 
 
     }
@@ -52,10 +52,15 @@ public class AutoBotService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        timer.cancel();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if (timer!=null)    {
+            timer.cancel();
+        }
+        timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -71,7 +76,9 @@ public class AutoBotService extends Service {
             for (ListingModel listing :
                     allActiveListings) {
                 Double highestBidSoFar = bidCRUD.getHighestBidFor(listing.get_id());
-
+                if (highestBidSoFar == null) {
+                    highestBidSoFar = 0.0;
+                }
                 bidCRUD.insert(new BidModel.Builder()
                         .withAmount(highestBidSoFar + new Random().nextInt(100))
                         .withListingId(String.valueOf(listing.get_id()))

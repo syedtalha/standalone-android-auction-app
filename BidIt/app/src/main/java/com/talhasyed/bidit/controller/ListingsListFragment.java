@@ -150,7 +150,7 @@ public class ListingsListFragment extends Fragment implements LoaderManager.Load
         listView = (ListView) view.findViewById(R.id.listViewListingsList);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
-//TODO        listView.setEmptyView(view.findViewById(R.id.emptyLayoutGeneralList));
+        listView.setEmptyView(view.findViewById(R.id.emptyLayoutGeneralList));
         getLoaderManager().initLoader(LOADER_ID_LIST, null, this);
 
         return view;
