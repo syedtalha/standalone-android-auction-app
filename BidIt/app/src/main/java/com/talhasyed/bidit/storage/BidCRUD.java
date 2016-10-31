@@ -19,6 +19,7 @@ import org.joda.time.DateTime;
 
 public class BidCRUD extends BaseCRUD {
 
+    public static final String SUCCESS = "Bid Posted";
     public BidCRUD(ContentResolver contentResolver) {
         super(contentResolver);
     }
@@ -77,7 +78,7 @@ public class BidCRUD extends BaseCRUD {
                     final Uri inserted = contentResolver.insert(BidProv.CONTENT_URI, intoContentValues(bid));
                     if (inserted != null) {
                         if (listingCRUD.postCurrentBid(listing.get_id(), bid.get_id())) {
-                            return "Bid Posted";
+                            return SUCCESS ;
                         } else {
                             return "Could not update listing entry";
                         }

@@ -159,7 +159,7 @@ public class AddItemActivity extends AppCompatActivity {
                 model.setClosingDate(closingTimeSet);
             }
         }
-        model.setStartDate(new DateTime());
+//        model.setStartDate(new DateTime());
         return model;
     }
 

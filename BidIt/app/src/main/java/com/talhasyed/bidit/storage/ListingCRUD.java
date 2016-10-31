@@ -61,6 +61,7 @@ public class ListingCRUD extends BaseCRUD {
     }
 
     public Long insert(@NonNull ListingModel listing) throws SQLiteConstraintException {
+        listing.setStartDate(new DateTime());
         final Uri inserted = contentResolver.insert(ListingProv.CONTENT_URI, intoContentValues(listing));
         if (inserted != null) {
             return Long.parseLong(inserted.getLastPathSegment());
@@ -70,6 +71,7 @@ public class ListingCRUD extends BaseCRUD {
     }
 
 
+    //TODO should be private
     public boolean postCurrentBid(Long listing_id, Long bid_id) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(ListingProv.CURRENT_BID_ID, bid_id);

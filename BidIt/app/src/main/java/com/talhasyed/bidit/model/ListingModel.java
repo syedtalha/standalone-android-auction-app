@@ -13,6 +13,18 @@ public class ListingModel extends BaseModel {
     private DateTime closingDate;
     private String currentBidId;
 
+    public ListingModel() {
+
+    }
+
+    private ListingModel(Builder builder) {
+        setName(builder.name);
+        setDescription(builder.description);
+        setStartDate(builder.startDate);
+        setClosingDate(builder.closingDate);
+        setCurrentBidId(builder.currentBidId);
+    }
+
     public String getName() {
         return name;
     }
@@ -51,5 +63,45 @@ public class ListingModel extends BaseModel {
 
     public void setCurrentBidId(String currentBidId) {
         this.currentBidId = currentBidId;
+    }
+
+    public static final class Builder {
+        private String name;
+        private String description;
+        private DateTime startDate;
+        private DateTime closingDate;
+        private String currentBidId;
+
+        public Builder() {
+        }
+
+        public Builder withName(String val) {
+            name = val;
+            return this;
+        }
+
+        public Builder withDescription(String val) {
+            description = val;
+            return this;
+        }
+
+        public Builder withStartDate(DateTime val) {
+            startDate = val;
+            return this;
+        }
+
+        public Builder withClosingDate(DateTime val) {
+            closingDate = val;
+            return this;
+        }
+
+        public Builder withCurrentBidId(String val) {
+            currentBidId = val;
+            return this;
+        }
+
+        public ListingModel build() {
+            return new ListingModel(this);
+        }
     }
 }
