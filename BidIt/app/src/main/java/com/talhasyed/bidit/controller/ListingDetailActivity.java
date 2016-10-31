@@ -98,6 +98,7 @@ public class ListingDetailActivity extends AutoBotServiceBoundActivity implement
                         null,
                         BidProv.LISTING_ID + " = ? ",
                         new String[]{String.valueOf(listingId)}, BidProv.DATE + " DESC ");
+
             }
 
             @Override

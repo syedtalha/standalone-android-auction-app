@@ -28,7 +28,7 @@ public class BidProvider extends BaseContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         if (uri.getPath().equals(BidProv.LIST_CONTENT_URI.getPath()))   {
             SQLiteDatabase db = mOpenHelper.getReadableDatabase();
-            Cursor c = db.query(BidProv.TABLE_NAME+" INNER JOIN "+ UserProv.TABLE_NAME+" ON "+ BidProv.TABLE_NAME+".["+ BidProv.USER_ID+"] = "+UserProv.TABLE_NAME+"."+UserProv._ID, new String[]{BidProv.TABLE_NAME+".*",UserProv.NAME},selection,selectionArgs,null,null, null);
+            Cursor c = db.query(BidProv.TABLE_NAME+" INNER JOIN "+ UserProv.TABLE_NAME+" ON "+ BidProv.TABLE_NAME+".["+ BidProv.USER_ID+"] = "+UserProv.TABLE_NAME+"."+UserProv._ID, new String[]{BidProv.TABLE_NAME+".*",UserProv.NAME},selection,selectionArgs,null,null,sortOrder);
             c.setNotificationUri(contentResolver, getBaseContentURI());
             return c;
         }   else    {
