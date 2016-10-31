@@ -64,6 +64,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".controller.MainActivity" />
         </activity>
+
+        <service
+            android:name=".service.AutoBotService"
+            android:enabled="true"
+            android:exported="false"></service>
     </application>
 
 </manifest>

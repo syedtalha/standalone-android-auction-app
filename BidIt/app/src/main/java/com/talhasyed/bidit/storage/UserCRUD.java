@@ -10,6 +10,10 @@ import com.talhasyed.bidit.credential.LocalAuthException;
 import com.talhasyed.bidit.model.UserModel;
 import com.talhasyed.bidit.storage.UserProviderContract.UserProv;
 
+import static com.talhasyed.bidit.service.AutoBotService.BOT_NAME;
+import static com.talhasyed.bidit.service.AutoBotService.BOT_PASSWORD;
+import static com.talhasyed.bidit.service.AutoBotService.BOT_USERNAME;
+
 /**
  * Created by Talha Syed on 29-10-2016.
  */
@@ -125,5 +129,18 @@ public class UserCRUD extends BaseCRUD {
             return userModel;
         }
         return null;
+    }
+
+
+    public UserModel getOrCreateBot() throws LocalAuthException {
+        final Cursor cursor = contentResolver.query(UserProv.CONTENT_URI, null, UserProv.USERNAME + " = ? ", new String[]{BOT_USERNAME}, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            final UserModel userModel = intoModel(cursor);
+            cursor.close();
+            return userModel;
+        }   else    {
+            return signUp(BOT_USERNAME,BOT_PASSWORD,BOT_NAME);
+        }
     }
 }

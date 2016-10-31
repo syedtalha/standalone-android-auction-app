@@ -20,9 +20,10 @@ import com.talhasyed.bidit.R;
 import com.talhasyed.bidit.credential.Authentication;
 import com.talhasyed.bidit.loader.UserDetailLoader;
 import com.talhasyed.bidit.model.UserModel;
+import com.talhasyed.bidit.service.AutoBotService;
 import com.talhasyed.bidit.storage.UserCRUD;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends AutoBotServiceBoundActivity
         implements
         NavigationView.OnNavigationItemSelectedListener, LoaderManager.LoaderCallbacks<UserModel> {
     private static final int LOADER_ID_USER_DETAILS = 0;
@@ -59,8 +60,6 @@ public class MainActivity extends AppCompatActivity
         tvUserName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.textViewMainNavHeaderUsername);
 
 
-
-
         userCRUD = new UserCRUD(getContentResolver());
         loggedInUserId = Authentication.getLoggedInUserId(getBaseContext());
         if (loggedInUserId == null) {
@@ -74,7 +73,6 @@ public class MainActivity extends AppCompatActivity
                 loggedInUser = userCRUD.get(loggedInUserId);
             }
         }
-
 
 
         if (loggedInUser != null) {

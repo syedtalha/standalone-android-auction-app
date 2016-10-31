@@ -146,7 +146,6 @@ public class BidItLocalDatabaseOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onConfigure(SQLiteDatabase db) {
-        //super.onConfigure(db);//FIXME enable super
         db.enableWriteAheadLogging();
 
     }

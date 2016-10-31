@@ -12,6 +12,9 @@ import com.talhasyed.bidit.storage.ListingProviderContract.ListingProv;
 
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Talha Syed on 29-10-2016.
  */
@@ -69,12 +72,40 @@ public class ListingCRUD extends BaseCRUD {
 
     public boolean postCurrentBid(Long listing_id, Long bid_id) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(ListingProv.CURRENT_BID_ID,bid_id);
+        contentValues.put(ListingProv.CURRENT_BID_ID, bid_id);
         final int updated = contentResolver.update(ListingProv.CONTENT_URI, contentValues, ListingProv._ID + " = ? ", new String[]{String.valueOf(listing_id)});
-        if (updated<1)  {
+        if (updated < 1) {
             return false;
-        }   else    {
+        } else {
             return true;
+        }
+    }
+
+
+    private ArrayList<ListingModel> arrayFromCursor(Cursor c) {
+        ArrayList<ListingModel> listingModels = new ArrayList<>();
+        if (c != null && c.getCount() > 0) {
+            c.moveToFirst();
+            for (int i = 0; i < c.getCount(); i++) {
+                listingModels.add(intoModel(c));
+                if (!c.moveToNext()) {
+                    break;
+                }
+            }
+            c.close();
+        }
+        return listingModels;
+    }
+
+    public List<ListingModel> getAllActiveListings() {
+        final Cursor cursor = contentResolver.query(ListingProv.CONTENT_URI, null, ListingProv.CLOSING_DATE + " > ? ", new String[]{String.valueOf(new DateTime().getMillis())}, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            final List<ListingModel> listingModel = arrayFromCursor(cursor);
+            cursor.close();
+            return listingModel;
+        } else {
+            return new ArrayList<ListingModel>();
         }
     }
 }

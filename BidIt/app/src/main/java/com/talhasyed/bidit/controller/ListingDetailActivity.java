@@ -22,7 +22,6 @@ import com.talhasyed.bidit.loader.ListingDetailLoader;
 import com.talhasyed.bidit.model.BidModel;
 import com.talhasyed.bidit.model.ListingModel;
 import com.talhasyed.bidit.storage.BidCRUD;
-import com.talhasyed.bidit.storage.BidProviderContract;
 import com.talhasyed.bidit.storage.BidProviderContract.BidProv;
 import com.talhasyed.bidit.storage.ListingCRUD;
 import com.talhasyed.bidit.storage.UserProviderContract;
@@ -36,7 +35,7 @@ import java.util.Locale;
 
 import biz.kasual.materialnumberpicker.MaterialNumberPicker;
 
-public class ListingDetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ListingModel> {
+public class ListingDetailActivity extends AutoBotServiceBoundActivity implements LoaderManager.LoaderCallbacks<ListingModel> {
     public static final String KEY_LISTING_ID = "key_listing_id";
     private static final int LOADER_ID_LISTING_DETAILS = 0;
     private static final int LOADER_ID_BID_LIST = 1;
@@ -82,7 +81,7 @@ public class ListingDetailActivity extends AppCompatActivity implements LoaderMa
         adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-                if (columnIndex==cursor.getColumnIndex(BidProv.DATE))   {
+                if (columnIndex == cursor.getColumnIndex(BidProv.DATE)) {
                     ((TextView) view).setText(DateTimeFormat.mediumDateTime().withLocale(Locale.getDefault()).withZone(DateTimeZone.getDefault()).print(new DateTime(Long.valueOf(cursor.getString(columnIndex)))));
                     return true;
                 }
@@ -97,8 +96,8 @@ public class ListingDetailActivity extends AppCompatActivity implements LoaderMa
                         getApplicationContext(),
                         BidProv.LIST_CONTENT_URI,
                         null,
-                        BidProv.LISTING_ID+" = ? ",
-                        new String[]{String.valueOf(listingId)}, BidProv.DATE+" DESC ");
+                        BidProv.LISTING_ID + " = ? ",
+                        new String[]{String.valueOf(listingId)}, BidProv.DATE + " DESC ");
             }
 
             @Override
@@ -215,6 +214,5 @@ public class ListingDetailActivity extends AppCompatActivity implements LoaderMa
 
     @Override
     public void onLoaderReset(Loader<ListingModel> loader) {
-
     }
 }
