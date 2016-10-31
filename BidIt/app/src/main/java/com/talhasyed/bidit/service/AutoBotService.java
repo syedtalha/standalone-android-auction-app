@@ -77,7 +77,7 @@ public class AutoBotService extends Service {
             public void run() {
                 checkForRunningPresedentialElectionsAndBid();
             }
-        }, 100, 15000);
+        }, 15000, 15000);
         return START_NOT_STICKY;
     }
 
